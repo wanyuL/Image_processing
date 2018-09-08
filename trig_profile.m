@@ -3,8 +3,16 @@ function trig_profile(laserlength,laserpower,ROI,plotwhich)
 
 
 all=dir('*.csv');
-r=csvread(all(2).name,1,1);  % only remain intensity info, delete first row ( variable names), first column (frame numbers)
-g=csvread(all(1).name,1,1);
+
+% before 8_18_18
+% r=csvread(all(2).name,1,1);  % only remain intensity info, delete first row ( variable names), first column (frame numbers)
+% g=csvread(all(1).name,1,1);
+
+%modify 8_18_18; include background subtraction
+r=csvread(all(4).name,1,1)-csvread(all(2).name,1,1);  
+g=csvread(all(3).name,1,1)-csvread(all(1).name,1,1);
+% r=csvread(all(4).name,1,1);  
+% g=csvread(all(3).name,1,1);
 f=1:numel(r); % total frame number 
 nl=1:numel(r)/5;   % number of loops
 
@@ -26,6 +34,8 @@ gfn1=5*(nl'-1)+1; % frame numbers of the red signal
 gfn2=5*(nl'-1)+3;
 rr=(r(rfn1)+r(rfn2))/2; % red signal when 561 nm is on
 gg=(g(gfn1)+g(gfn2))/2;  % green signal when 561 nm is on
+% rr=r(rfn1); % red signal when 561 nm is on
+% gg=g(gfn2);  % green signal when 561 nm is on
 switch plotwhich
     case 1
 figure;
